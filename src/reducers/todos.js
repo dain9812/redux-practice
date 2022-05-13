@@ -1,4 +1,4 @@
-import { ADD_TODO } from "../actions";
+import { ADD_TODO, DELETE_TODO } from "../actions";
 
 const todos = (state = [], action) => {
   switch (action.type) {
@@ -11,6 +11,8 @@ const todos = (state = [], action) => {
           completed: false,
         },
       ];
+    case DELETE_TODO:
+      return [...state.filter((todo) => todo.id !== action.id)];
     default:
       return state;
   }
