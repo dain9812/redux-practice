@@ -1,4 +1,4 @@
-import { ADD_TODO, DELETE_TODO } from "../actions";
+import { ADD_TODO, COMPLETED_TODO, DELETE_TODO } from "../actions";
 
 const todos = (state = [], action) => {
   switch (action.type) {
@@ -13,6 +13,12 @@ const todos = (state = [], action) => {
       ];
     case DELETE_TODO:
       return [...state.filter((todo) => todo.id !== action.id)];
+    case COMPLETED_TODO:
+      return [
+        ...state.map((todo) =>
+          todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
+        ),
+      ];
     default:
       return state;
   }

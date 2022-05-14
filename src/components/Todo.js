@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { deleteTodo } from "../actions";
+import { completedTodo, deleteTodo } from "../actions";
 import styled from "styled-components";
 
 const Li = styled.li`
@@ -12,6 +12,9 @@ const Li = styled.li`
   &:last-child {
     border: none;
   }
+  &.done {
+    color: #ccc;
+  }
 `;
 
 const Button = styled.button`
@@ -19,24 +22,50 @@ const Button = styled.button`
   background: none;
   border: none;
   border-radius: 5px;
-  color: #ff3339;
   cursor: pointer;
   padding: 0;
+  &:last-child {
+    margin-left: 15px;
+  }
 `;
 
-const Todo = ({ id, text }) => {
+const Text = styled.div`
+  position: relative;
+`;
+
+const CompletedLine = styled.span`
+  position: absolute;
+  top: 50%;
+  left: -3px;
+  right: -3px;
+  transform: translateY(-50%);
+  height: 1px;
+  background: #3367ff;
+`;
+
+const Todo = ({ id, text, completed }) => {
   const dispatch = useDispatch();
+
+  const handleCompleted = (e) => {
+    dispatch(completedTodo(id));
+    e.preventDefault();
+  };
 
   const handleDelete = (e) => {
     dispatch(deleteTodo(id));
-
     e.preventDefault();
   };
 
   return (
-    <Li>
-      {text}
-      <Button onClick={handleDelete}>✕</Button>
+    <Li className={completed ? "done" : ""}>
+      <Text>
+        {text}
+        {completed ? <CompletedLine /> : ""}
+      </Text>
+      <div>
+        <Button onClick={handleCompleted}>✅</Button>
+        <Button onClick={handleDelete}>❌</Button>
+      </div>
     </Li>
   );
 };
